@@ -7,8 +7,8 @@ import kotlin.reflect.KType
 data class ResponseModel(
     val statusCode: Int = 200,
     val description: String? = null,
-    val kType: KType,
-    val schema: SchemaObject,
+    val kType: KType? = null,
+    val schema: SchemaObject? = null,
     val fieldOverrides: Map<String, FieldDescriptor> = emptyMap(),
     val contentType: String = "application/json",
 )

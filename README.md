@@ -170,6 +170,64 @@ ktypo {
 }
 ```
 
+### commonResponses
+
+공통 에러 응답을 한 번만 정의하면 모든 operation에 자동으로 포함된다.
+
+```kotlin
+ktypo {
+    commonResponses {
+        response<ErrorResponse>(400) { description("Bad Request") }
+        response(401, "Unauthorized")      // body 없는 응답
+        response(403, "Forbidden")
+        response<ErrorResponse>(500) { description("Internal Server Error") }
+    }
+
+    document("create-user") {
+        post("/api/users") {
+            // commonResponses가 자동으로 포함됨
+            responseBody<ApiResponse<UserDto>> { description("Success") }
+        }
+    }
+}
+```
+
+- `response<T>(statusCode) { ... }` — body가 있는 typed 응답
+- `response(statusCode, description)` — description만 있는 응답 (body 없음)
+
+#### 특정 operation에서 공통 응답 제외
+
+`excludeCommonResponses()`로 특정 status code의 공통 응답을 제외할 수 있다.
+
+```kotlin
+document("public-endpoint") {
+    get("/api/public") {
+        excludeCommonResponses(401, 403)
+        responseBody<ApiResponse<String>> {}
+    }
+}
+```
+
+#### operation 응답이 공통 응답을 오버라이드
+
+operation에서 공통 응답과 같은 status code로 응답을 정의하면, operation의 응답이 우선한다.
+
+```kotlin
+commonResponses {
+    response<ErrorResponse>(400) { description("Common Bad Request") }
+}
+
+document("create-user") {
+    post("/api/users") {
+        // 이 400 응답이 공통 400 응답을 대체한다
+        responseBody<ValidationErrorResponse> {
+            statusCode(400)
+            description("Validation Error")
+        }
+    }
+}
+```
+
 ### document
 
 `document("식별자")` 블록 안에서 HTTP 메서드를 선택한다. 하나의 document에는 하나의 operation만 정의할 수 있다.

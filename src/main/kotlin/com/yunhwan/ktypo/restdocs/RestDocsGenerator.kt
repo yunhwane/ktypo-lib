@@ -28,7 +28,8 @@ class RestDocsGenerator(
 
         // Response fields
         for (resp in op.responses) {
-            val fields = flattener.flatten(resp.schema, resp.fieldOverrides)
+            val schema = resp.schema ?: continue
+            val fields = flattener.flatten(schema, resp.fieldOverrides)
             val content = SnippetTemplates.responseFieldsTable(fields)
             SnippetWriter.write(outputDir, doc.identifier, "response-fields", content)
         }

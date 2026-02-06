@@ -111,10 +111,12 @@ class OpenApiGenerator(
             for (resp in op.responses) {
                 apiResponses.addApiResponse(resp.statusCode.toString(), ApiResponse().apply {
                     description = resp.description ?: "OK"
-                    content = Content().apply {
-                        addMediaType(resp.contentType, MediaType().apply {
-                            schema = OpenApiConverter.convert(resp.schema)
-                        })
+                    resp.schema?.let { respSchema ->
+                        content = Content().apply {
+                            addMediaType(resp.contentType, MediaType().apply {
+                                schema = OpenApiConverter.convert(respSchema)
+                            })
+                        }
                     }
                 })
             }

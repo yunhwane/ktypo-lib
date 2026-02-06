@@ -70,7 +70,7 @@ class DslIntegrationTest {
         // Response
         assertEquals(1, doc.operation.responses.size)
         val response = doc.operation.responses[0]
-        assertTrue(response.schema.isRef)
+        assertTrue(response.schema!!.isRef)
         assertEquals(2, response.fieldOverrides.size)
     }
 

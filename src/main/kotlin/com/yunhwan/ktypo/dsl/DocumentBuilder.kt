@@ -3,12 +3,14 @@ package com.yunhwan.ktypo.dsl
 import com.yunhwan.ktypo.model.DocumentModel
 import com.yunhwan.ktypo.model.HttpMethod
 import com.yunhwan.ktypo.model.OperationModel
+import com.yunhwan.ktypo.model.ResponseModel
 import com.yunhwan.ktypo.schema.TypeResolver
 
 @KtypoDslMarker
 class DocumentBuilder(
     private val identifier: String,
     private val typeResolver: TypeResolver,
+    private val commonResponses: List<ResponseModel> = emptyList(),
 ) {
     private var operation: OperationModel? = null
 
@@ -37,7 +39,7 @@ class DocumentBuilder(
         path: String,
         block: OperationBuilder.() -> Unit,
     ): OperationModel {
-        val builder = OperationBuilder(method, path, typeResolver)
+        val builder = OperationBuilder(method, path, typeResolver, commonResponses)
         builder.block()
         return builder.build()
     }

@@ -3,6 +3,7 @@ package com.yunhwan.ktypo.dsl
 import com.yunhwan.ktypo.KtypoSpec
 import com.yunhwan.ktypo.config.KtypoConfig
 import com.yunhwan.ktypo.model.DocumentModel
+import com.yunhwan.ktypo.model.ResponseModel
 import com.yunhwan.ktypo.schema.SchemaRegistry
 import com.yunhwan.ktypo.schema.TypeResolver
 
@@ -23,6 +24,7 @@ class KtypoBuilder {
     private val documents = mutableListOf<DocumentModel>()
     private val configBuilder = KtypoConfig.Builder()
     private val typeResolver = TypeResolver()
+    private var commonResponses: List<ResponseModel> = emptyList()
 
     fun info(block: InfoBuilder.() -> Unit) {
         val info = InfoBuilder()
@@ -36,8 +38,14 @@ class KtypoBuilder {
         configBuilder.block()
     }
 
+    fun commonResponses(block: CommonResponsesBuilder.() -> Unit) {
+        val builder = CommonResponsesBuilder(typeResolver)
+        builder.block()
+        commonResponses = builder.build()
+    }
+
     fun document(identifier: String, block: DocumentBuilder.() -> Unit) {
-        val builder = DocumentBuilder(identifier, typeResolver)
+        val builder = DocumentBuilder(identifier, typeResolver, commonResponses)
         builder.block()
         documents.add(builder.build())
     }
