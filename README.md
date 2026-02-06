@@ -10,10 +10,16 @@ Kotlin 리플렉션(`typeOf<T>()`)을 활용해 `ApiResponse<PageResponse<UserDt
 
 ```kotlin
 // build.gradle.kts
+repositories {
+    maven { url = uri("https://jitpack.io") }
+}
+
 dependencies {
-    implementation("com.yunhwan:ktypo:0.0.1-SNAPSHOT")
+    implementation("com.github.yunhwane:ktypo-lib:Tag")
 }
 ```
+
+> `Tag`에는 GitHub Release 태그명(예: `0.0.1`)을 넣으면 된다. credential 설정 불필요.
 
 ### 2. 도메인 모델 정의
 

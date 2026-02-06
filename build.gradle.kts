@@ -4,7 +4,7 @@ plugins {
     `maven-publish`
 }
 
-group = "com.yunhwan"
+group = "com.github.yunhwane"
 version = "0.0.1-SNAPSHOT"
 description = "ktypo - Swagger + RestDocs auto-generation Kotlin DSL library"
 
@@ -49,45 +49,8 @@ publishing {
             from(components["java"])
 
             groupId = project.group.toString()
-            artifactId = "ktypo"
+            artifactId = "ktypo-lib"
             version = project.version.toString()
-
-            pom {
-                name.set("ktypo")
-                description.set("Kotlin DSL library for auto-generating OpenAPI 3.1 specs and RestDocs Asciidoc snippets")
-                url.set("https://github.com/yunhwane/ktypo-lib")
-
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://opensource.org/licenses/MIT")
-                    }
-                }
-
-                developers {
-                    developer {
-                        id.set("yunhwane")
-                        name.set("yunhwan")
-                    }
-                }
-
-                scm {
-                    connection.set("scm:git:git://github.com/yunhwane/ktypo-lib.git")
-                    developerConnection.set("scm:git:ssh://github.com/yunhwane/ktypo-lib.git")
-                    url.set("https://github.com/yunhwane/ktypo-lib")
-                }
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/yunhwane/ktypo-lib")
-            credentials {
-                username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
-                password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
-            }
         }
     }
 }
